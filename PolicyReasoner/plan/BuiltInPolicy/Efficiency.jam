@@ -1,0 +1,27 @@
+PREFIXES:
+	PREFIX arbi: <http://www.arbi.com//ontologies#>;
+	PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;		
+
+PLAN PERFORM EvaluatePolicyValue($policyName) {
+	ID : "EfficiencyPolicy"
+	PRECONDITION :
+	    FACT predictTaskTime($robot, $task, $time);
+        FACT PolicyHandler($policyHandler);
+        FACT batteryNeed($robot, $task, $nbattery);
+        FACT PolicyReasoner($policyrReasoner);
+		$policyName == "Efficiency";
+	BODY :
+	    $rankList = $policyrReasoner.calcRank($policyName, $task);
+		$maxt = 500.0;
+		$mint = 10.0;
+		$maxb = 500.0;
+		$minb = 10.0;
+		
+        $b_value = ($maxb - $nbattery) / ($maxb - $minb);
+        $t_value = ($maxt - $time) / ($maxt - $mint);
+		$value = ($t_value * $rankList.get(0)) + ($b_value * $rankList.get(1));
+		$value = $policyrReasoner.calcGrade($policyName, $value);
+		System.out.println("Efficiency value is " + $value);
+		PERFORM UpdatePolicyValue("Efficiency", $robot, $task, $value);
+	UTILITY : 99;
+}

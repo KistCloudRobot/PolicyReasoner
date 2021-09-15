@@ -1,0 +1,46 @@
+PREFIXES:
+	PREFIX arbi: <http://www.arbi.com//ontologies#>;
+	PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;		
+
+PLAN PERFORM EvaluatePolicyValue($policyName) {
+	ID : "SafetyPolicyWithCollidable"
+	PRECONDITION :
+	    FACT batteryRemained($robot, $rbattery);
+        FACT PolicyHandler($policyHandler);    
+        FACT batteryNeed($robot, $task, $nbattery);
+        FACT collidable($robot,$robot1, $c);
+        FACT PolicyReasoner($policyrReasoner);
+		$policyName == "Safety";
+		
+	BODY :	
+	
+		System.out.println("start policy");
+        $rankList = $policyrReasoner.calcRank($policyName, $task);
+		$value =((($rbattery - $nbattery) / $rbattery) * $rankList.get(0)) + ((30.0 - $c) * $rankList.get(1));
+		$value = $policyrReasoner.calcGrade($policyName, $value);
+		System.out.println("Safety value is " + $value);
+		PERFORM UpdatePolicyValue("Safety", $robot, $task, $value);
+		
+	UTILITY : 99;
+}
+
+PLAN PERFORM EvaluatePolicyValue($policyName) {
+	ID : "SafetyPolicyWithoutCollidable"
+	PRECONDITION :
+	    FACT batteryRemained($robot, $rbattery);
+        FACT PolicyHandler($policyHandler);    
+        FACT batteryNeed($robot, $task, $nbattery);
+        FACT PolicyReasoner($policyrReasoner);
+		$policyName == "Safety";
+		
+	BODY :	
+	
+		System.out.println("start policy");
+		$value =(($rbattery - $nbattery) / $rbattery);
+		$value = $policyrReasoner.calcGrade($policyName, $value);
+		System.out.println("Safety value is " + $value);
+		PERFORM UpdatePolicyValue("Safety", $robot, $task, $value);
+		
+	UTILITY : 90;
+}
+

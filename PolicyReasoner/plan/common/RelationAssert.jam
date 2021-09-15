@@ -1,0 +1,19 @@
+PREFIXES:
+	PREFIX arbi: <http://www.arbi.com//ontologies#>;
+	PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;		
+
+/*
+	
+PLAN PERFORM RelationAssert() {
+	ID : "RelationAssert"
+	PRECONDITION : 
+		FACT PolicyReasoner($policyrReasoner);
+
+	BODY :
+	    $safety = "(policy (Safety \"\" \"" + "\" (contextList (batteryRemained $robot $rbattery)(batteryNeed $robot $task $nbattery)(collidable $robot $task $c))))";
+		$policyrReasoner.onData("init", $safety);
+		$efficiency = "(policy (Efficiency \"\" \"" + "\" (contextList (batteryNeed $robot $task $nbattery)(predictTaskTime $robot $task $time))))";
+		$policyrReasoner.onData("init", $efficiency);
+	UTILITY : 1;
+}
+*/

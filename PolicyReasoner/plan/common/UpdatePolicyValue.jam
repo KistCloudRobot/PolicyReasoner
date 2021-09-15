@@ -1,0 +1,26 @@
+PREFIXES:
+	PREFIX arbi: <http://www.arbi.com//ontologies#>;
+	PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;		
+
+PLAN PERFORM UpdatePolicyValue ($policyName, $robot, $task, $value) {
+ID : "UpdatePolicyValue"
+PRECONDITION : 
+	FACT PolicyReasoner($policyReasoner);
+	FACT LoggerManager($lm);
+	FACT PolicyHandler($handler);
+BODY : 
+	$arg = $handler.generatePolicyUpdateArgument($policyName, $robot, $value);
+	$lm.action("policyUpdate", $arg);
+	WHEN : FACT PolicyValue($policyName, $robot, $task, $oldPolicyValue)
+	{
+	    RETRACT PolicyValue($policyName, $robot, $task, $oldPolicyValue);
+	};
+	ASSERT PolicyValue($policyName, $robot, $task, $value);
+	
+	System.out.println("policy updated : "+ $policyName +", "+$robot +", "+$value);
+	$policyReasoner.updatePolicy($policyName, $robot, $task, $value);
+	
+	//ASSERT AssertedContext($policyName);
+UTILITY : 1;
+}
+

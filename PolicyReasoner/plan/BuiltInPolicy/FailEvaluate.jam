@@ -1,0 +1,12 @@
+PREFIXES:
+	PREFIX arbi: <http://www.arbi.com//ontologies#>;
+	PREFIX isro: <http://www.arbi.com//BuiltInPlan#>;		
+
+PLAN PERFORM EvaluatePolicyValue($policyName) {
+	ID : "fail"
+	PRECONDITION :
+	BODY :
+		System.out.println("precondition not satisfied!!");
+
+	UTILITY : 1;
+}

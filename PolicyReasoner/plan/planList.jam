@@ -1,0 +1,13 @@
+PREFIXES:
+	PREFIX arbi: <http://www.arbi.com//ontologies#>;
+
+PLAN PERFORM loadPlanPackage(){
+	ID : "loadPlanPackage"
+	PRECONDITION:
+		FACT PolicyReasoner($policyrReasoner);
+	BODY:
+		$policyrReasoner.loadPlanPackage("plan/common");
+		$policyrReasoner.loadPlanPackage("plan/BuiltInPolicy");
+		//System.out.println(3 - "33");
+		//PERFORM EvaluatePolicyValue("Safety");
+}
